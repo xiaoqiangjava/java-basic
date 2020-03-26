@@ -19,7 +19,7 @@ public class LinkedListMain
         head.next = new ListNode(2);
         head.next.next = new ListNode(3);
         head.next.next.next = new ListNode(4);
-        ListNode node = reverseList(head);
+        ListNode node = reverseList1(head);
         System.out.println(node);
     }
     /**
@@ -46,6 +46,19 @@ public class LinkedListMain
         }
 
         return pre;
+    }
+
+    public static ListNode reverseList1(ListNode head)
+    {
+        if (null == head || null == head.next)
+        {
+            return head;
+        }
+        ListNode temp = reverseList1(head.next);
+        head.next.next = head;
+        head.next = null;
+
+        return temp;
     }
 
     /**
