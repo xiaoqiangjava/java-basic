@@ -1,10 +1,8 @@
 package com.xq.learn.datastruct;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.TreeMap;
 
 /**
  * 优先队列：
@@ -30,7 +28,7 @@ public class PriorityQueueMain
         KthLargest kthLargest = new KthLargest(3, nums);
         System.out.println(kthLargest.add(9));
 
-        int[] maxs = maxSlidingWindow(nums, 2);
+        int[] maxs = maxSlidingWindowDeque(nums, 2);
         System.out.println(maxs);
     }
 
@@ -43,6 +41,7 @@ public class PriorityQueueMain
      *  1  3  -1 [-3  5  3] 6  7       5
      *  1  3  -1  -3 [5  3  6] 7       6
      *  1  3  -1  -3  5 [3  6  7]      7
+     *  该算法的时间复杂度是 O(nlogn)
      * @param nums 给定的数组
      * @param k window窗口的大小
      * @return 最大的元素
@@ -68,6 +67,43 @@ public class PriorityQueueMain
             if (i >= k - 1)
             {
                 res[idx] = window.peek();
+                idx++;
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * 使用Deque实现，该算法的时间复杂度是O(n)
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int[] maxSlidingWindowDeque(int[] nums, int k)
+    {
+        // 校验参数
+        if (null == nums || nums.length == 0)
+        {
+            return new int[0];
+        }
+        Deque<Integer> window = new LinkedList<>();
+        int[] res = new int[nums.length - k + 1];
+        int idx = 0;
+        for (int i = 0; i < nums.length; i++)
+        {
+            if (i >= k && window.getFirst() <= i - k)
+            {
+                window.poll();
+            }
+            while (!window.isEmpty() && nums[window.getLast()] <= nums[i])
+            {
+                window.pollLast();
+            }
+            window.offer(i);
+            if (i >= k - 1)
+            {
+                res[idx] = nums[window.getFirst()];
                 idx++;
             }
         }
