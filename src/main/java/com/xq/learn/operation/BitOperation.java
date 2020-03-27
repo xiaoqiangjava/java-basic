@@ -1,7 +1,5 @@
 package com.xq.learn.operation;
 
-import javax.sound.midi.Soundbank;
-
 /**
  * java 中的位运算符:<< >> & | ! ^
  * <<: 左移，常用来乘以2的n次方时使用。

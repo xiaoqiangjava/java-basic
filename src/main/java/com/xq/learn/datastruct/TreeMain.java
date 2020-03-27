@@ -1,6 +1,7 @@
 package com.xq.learn.datastruct;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,16 +28,15 @@ public class TreeMain
     private static List<Integer> path = new ArrayList<>();
     public static void main(String[] args)
     {
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
-        root.right.left = new TreeNode(6);
-        root.right.right = new TreeNode(7);
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(1);
+        root.right = new TreeNode(4);
+        root.right.left = new TreeNode(3);
+        root.right.right = new TreeNode(6);
         // 前序遍历
-        postOrder(root);
+//        postOrder(root);
         System.out.println(path);
+        System.out.println(isValidBST(root));
     }
 
     /**
@@ -81,7 +81,33 @@ public class TreeMain
         }
     }
 
+    public static boolean isValidBST(TreeNode root)
+    {
+        return order(root);
+    }
 
+    private static boolean order(TreeNode root)
+    {
+        if (null != root)
+        {
+            boolean flag = order(root.left);
+            if (!flag)
+            {
+                return false;
+            }
+            if (path.size() > 0 && path.get(path.size() - 1) >= root.val)
+            {
+                return false;
+            }
+            path.add(root.val);
+            flag = order(root.right);
+            if (!flag)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 class TreeNode
