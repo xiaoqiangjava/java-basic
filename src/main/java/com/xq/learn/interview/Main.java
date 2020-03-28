@@ -34,6 +34,8 @@ public class Main
         node.next = new ListNode(2);
         node.next.next = new ListNode(3);
         hasCycle(node);
+
+        majorityElement(new int[]{1, 3, 3});
     }
 
     public static int[] twoSum(int[] nums, int target) {
@@ -136,6 +138,18 @@ public class Main
             fast = head.next.next;
         }
         return slow;
+    }
+
+    public static int majorityElement(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.compute(num, (k, v) -> null == v ? 1 : ++v);
+            if (map.get(num) > nums.length / 2)
+            {
+                return num;
+            }
+        }
+        return 0;
     }
 }
 
