@@ -1,7 +1,6 @@
 package com.xq.learn.datastruct;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
