@@ -32,6 +32,8 @@ public class DepthFirstSearch
         System.out.println("max depth: " + maxDepth(root));
         // dfs求树的最小深度
         System.out.println("min depth: " + minDepth(root));
+        // 生成括号
+        System.out.println(generateParenthesis(3));
 
     }
     /**
@@ -136,5 +138,33 @@ public class DepthFirstSearch
         int right = minDepth(root.right);
         // 这里需要注意，如果有一边不存在，需要+1
         return (left == 0 || right == 0) ? left + right + 1 : Math.min(left, right) + 1;
+    }
+
+    /**
+     * 生成有效的括号
+     * LeetCode: 22
+     * @param n 有效括号的对数
+     * @return res
+     */
+    public static List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        // left表示已经使用了的左括号，right表示已经使用了的右括号
+        doGenerate(0, 0, n, result, "");
+        return result;
+    }
+
+    private static void doGenerate(int left, int right, int n, List<String> result, String curr) {
+        // 1. 终止条件
+        if (left == n && right == n) {
+            result.add(curr);
+            return;
+        }
+        // 2. 生成括号，递归调用
+        if (left < n) {
+            doGenerate(left + 1, right, n, result, curr + "(");
+        }
+        if (left > right) {
+            doGenerate(left, right + 1, n, result, curr + ")");
+        }
     }
 }
