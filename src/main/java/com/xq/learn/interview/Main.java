@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 面试题
@@ -34,8 +37,9 @@ public class Main
         node.next = new ListNode(2);
         node.next.next = new ListNode(3);
         hasCycle(node);
-
+        System.out.println('Z' - 'z');
         majorityElement(new int[]{1, 3, 3});
+
     }
 
     public static int[] twoSum(int[] nums, int target) {
@@ -150,6 +154,120 @@ public class Main
             }
         }
         return 0;
+    }
+
+    public static String getResult() {
+        Scanner scanner = new Scanner(System.in);
+        String line = scanner.nextLine();
+        String[] steps = line.split(";");
+        String result = "(%s, %s)";
+        Map<String, Integer> map = new HashMap<>();
+        for (String step : steps) {
+            if (isValid(step)) {
+                int temp = Integer.parseInt(step.substring(1));
+                map.compute(step.substring(0, 1), (k, v) -> null == v ? temp : v + temp);
+            }
+        }
+        int x = 0, y = 0;
+        for (String key : map.keySet()) {
+            switch (key) {
+                case "A":
+                    x -= map.get("A");
+                    break;
+                case "D":
+                    x += map.get("D");
+                    break;
+                case "W":
+                    y += map.get("W");
+                    break;
+                case "S":
+                    y -= map.get("S");
+                    break;
+                default:
+                    break;
+            }
+        }
+        return String.format(result, x, y);
+    }
+
+    private static boolean isValid(String input) {
+        String regex = "^[ADWS]{1}(\\d){1,2}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
+    }
+
+    public static void pwdValid() {
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            if (null == line || line.length() < 9) {
+                System.out.println("NG");
+                continue;
+            }
+            int[] category = new int[4];
+            int sum = 0;
+            for (char ch : line.toCharArray()) {
+                if (ch >= '0' && ch <= '9') {
+                    category[0] = 1;
+                } else if (ch >= 'a' && ch <= 'z') {
+                    category[1] = 1;
+                } else if (ch >= 'A' && ch <= 'Z') {
+                    category[2] = 1;
+                } else {
+                    category[3] = 1;
+                }
+                sum = category[0] + category[1] + category[2] + category[3];
+                if (sum >= 3) {
+                    break;
+                }
+            }
+            if (sum < 3) {
+                System.out.println("NG");
+            } else {
+                System.out.println(hasSubString(line));
+            }
+
+        }
+    }
+
+    private static String hasSubString(String line) {
+        for (int i = 0; i < line.length() - 3; i++) {
+            String sub = line.substring(i, i + 3);
+            if (line.substring(i + 3).contains(sub)) {
+                return "NG";
+            }
+        }
+        return "OK";
+    }
+
+    public static void simplePwd() {
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            StringBuilder builder = new StringBuilder();
+            for (char ch : line.toCharArray()) {
+                builder.append(alphaTrans(ch));
+            }
+            System.out.println(builder.toString());
+        }
+    }
+
+    private static char alphaTrans(char ch) {
+        // 'Z'特殊处理为a
+        if (ch == 'Z') {
+            return  'a';
+        }
+        if (ch >= 'A' && ch < 'Z') {
+            ch = (char) (ch + 32);
+            return ++ch;
+        }
+        int[] charTable = {2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9};
+        if (ch >= 'a' && ch <= 'z') {
+            return (char) (charTable[ch - 'a'] + '0');
+        }
+
+        return ch;
     }
 }
 
